@@ -10,7 +10,7 @@ const ActivityCard = () => (
       filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
       transition: ".5s all",
       "&:hover": {
-        transform: "scale(0.98)",
+        filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.25))",
         transition: ".5s all",
       },
     }}
