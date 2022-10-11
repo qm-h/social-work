@@ -16,6 +16,7 @@ specifiers:
   '@mantine/rte': 5.5.4
   '@mantine/spotlight': 5.5.4
   '@nextui-org/react': 1.0.0-beta.10
+  '@tabler/icons': 1.102.0
   '@types/node': 18.8.3
   '@types/react': 18.0.21
   '@types/react-dom': 18.0.6
@@ -44,6 +45,7 @@ dependencies:
   '@mantine/rte': 5.5.4_peoatue7sckyfiogasz7flkvpm
   '@mantine/spotlight': 5.5.4_peoatue7sckyfiogasz7flkvpm
   '@nextui-org/react': 1.0.0-beta.10_biqbaboplfbrettd7655fr4n2y
+  '@tabler/icons': 1.102.0_biqbaboplfbrettd7655fr4n2y
   dayjs: 1.11.5
   embla-carousel-react: 7.0.3_react@18.2.0
   next: 12.3.1_hljcwjkur2tdip6clah3ea6o7u
