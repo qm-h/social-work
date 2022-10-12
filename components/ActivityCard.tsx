@@ -1,8 +1,8 @@
-import { Box, Button, Card, Image, Indicator, Text } from "@mantine/core";
+import { Badge, Text, User } from "@nextui-org/react";
+import { Box, Button, Card, Image } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { Activity } from "../utils/types";
-import { User } from "@nextui-org/react";
 import { convertTimeStampToDate } from "../utils/convert";
 import dayjs from "dayjs";
 import { mockUser } from "../utils/mock/mockData";
@@ -69,19 +69,18 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
           }}
         >
           <Box>
-            <Text sx={{ fontSize: 20, color: "#171B1E", fontWeight: 500 }}>
+            <Text h3 css={{ color: "#171B1E", fontWeight: 500 }}>
               {title}
             </Text>
             <Text
-              sx={{
-                fontSize: 18,
-                color: state === "running" ? "#40c057" : "#f95352",
+              css={{
+                color: state === "running" ? "$blue600" : "$red600",
                 fontWeight: 400,
               }}
             >
               {state === "running" ? "En cours" : "Terminé"}
             </Text>
-            <Text sx={{ fontSize: 16, color: "#85888A", fontWeight: 400 }}>
+            <Text css={{ color: "#85888A", fontWeight: 400 }}>
               {isToday ? `Aujourd'hui à ${convertedDate}` : convertedDate}
             </Text>
           </Box>
@@ -95,24 +94,27 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                 justifyContent: "space-between",
               }}
             >
-              <Indicator
-                position="top-end"
-                radius="sm"
-                color={isCompleted ? "red" : "green"}
-                label={isCompleted ? "Complet" : "Disponible"}
-                size={16}
+              <Badge
+                placement="top-right"
+                color={isCompleted ? "error" : "primary"}
+                content={isCompleted ? "Complet" : "Disponible"}
+                size="xs"
+                shape="rectangle"
               >
                 <Text
-                  sx={{
+                  css={{
                     fontSize: 20,
                     color: "#171B1E",
                     fontWeight: 500,
                     margin: ".1rem",
+                    padding: ".8rem",
+                    borderRadius: "$sm",
+                    background: "$accents0",
                   }}
                 >
                   {parti} / {participantsMax}
                 </Text>
-              </Indicator>
+              </Badge>
               <Button
                 disabled={isCompleted || hasAdded}
                 variant="light"

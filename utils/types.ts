@@ -29,6 +29,7 @@ export type UserType = {
   id: number;
   name: string;
   avatar: string;
+  role: "admin" | "user";
   email: string;
   password: string;
   isConnect: boolean;

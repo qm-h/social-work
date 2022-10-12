@@ -42,7 +42,9 @@ interface NavbarLinkProps {
 
 const NavbarLink = ({ link, active, onClick }: NavbarLinkProps) => {
   const { classes, cx } = useStyles();
-  const countActivity = mockActivity.length;
+  const countActivityRunning = mockActivity.filter(
+    (activity) => activity.state === "running"
+  ).length;
   const Icon = link.icon as IconType;
   return (
     <Tooltip placement="right" color="primary" rounded content={link.label}>
@@ -56,8 +58,10 @@ const NavbarLink = ({ link, active, onClick }: NavbarLinkProps) => {
               placement="top-right"
               color="primary"
               disableOutline
-              isInvisible={countActivity === 0}
-              content={countActivity > 99 ? `99+` : `${countActivity}`}
+              isInvisible={countActivityRunning === 0}
+              content={
+                countActivityRunning > 99 ? `99+` : `${countActivityRunning}`
+              }
               size="xs"
               shape="rectangle"
             >
