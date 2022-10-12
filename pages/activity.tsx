@@ -1,8 +1,9 @@
 import ActivityCard from "../components/ActivityCard";
 import { Grid } from "@mantine/core";
+import { NextPage } from "next";
 import { mockActivity } from "../utils/mock/mockData";
 
-const Activity = () => (
+const Activity: NextPage = () => (
   <Grid gutter={30}>
     {mockActivity.map((activity, id) => (
       <Grid.Col key={id} span={3}>

@@ -55,7 +55,7 @@ interface HeaderSearchProps {
   links: { link: string; label: string }[];
 }
 
-function HeaderSearchComponent({ links }: HeaderSearchProps) {
+const HeaderSearchComponent = ({ links }: HeaderSearchProps) => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 
@@ -91,6 +91,6 @@ function HeaderSearchComponent({ links }: HeaderSearchProps) {
       </Center>
     </Header>
   );
-}
+};
 
 export default HeaderSearchComponent;
