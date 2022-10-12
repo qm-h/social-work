@@ -1,11 +1,10 @@
 import { Badge, Tooltip } from "@nextui-org/react";
 import { Navbar, Stack, UnstyledButton, createStyles } from "@mantine/core";
 import { mockActivity, mockLinks } from "../utils/mock/mockData";
-import { useEffect, useState } from "react";
 
 import { IconType } from "react-icons/lib";
 import Link from "next/link";
-import Router from "next/router";
+import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   link: {

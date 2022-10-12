@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Group,
-  Image,
-  Indicator,
-  Text,
-} from "@mantine/core";
+import { Box, Button, Card, Image, Indicator, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { Activity } from "../utils/types";
@@ -20,7 +12,7 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { title, participants, participantsMax, date, state, id, userID } =
+  const { title, participants, participantsMax, date, state, userID } =
     activity;
   const [isCompleted, setIsCompleted] = useState(false);
   const [convertedDate, setConvertedDate] = useState("");
