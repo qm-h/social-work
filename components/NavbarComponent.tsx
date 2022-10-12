@@ -4,6 +4,7 @@ import { mockActivity, mockLinks } from "../utils/mock/mockData";
 
 import { IconType } from "react-icons/lib";
 import Link from "next/link";
+import { LinkType } from "../utils/types";
 import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
@@ -34,34 +35,26 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface NavbarLinkProps {
-  icon: IconType;
-  label: string;
+  link: LinkType;
   active?: boolean;
   onClick?(): void;
-  path?: string;
 }
 
-const NavbarLink = ({
-  icon: Icon,
-  label,
-  active,
-  onClick,
-  path,
-}: NavbarLinkProps) => {
+const NavbarLink = ({ link, active, onClick }: NavbarLinkProps) => {
   const { classes, cx } = useStyles();
   const countActivity = mockActivity.length;
-
+  const Icon = link.icon as IconType;
   return (
-    <Tooltip placement="right" color="primary" rounded content={label}>
-      <Link href={path ? path : ""}>
+    <Tooltip placement="right" color="primary" rounded content={link.label}>
+      <Link href={link.path ? link.path : ""}>
         <UnstyledButton
           onClick={onClick}
           className={cx(classes.link, { [classes.active]: active })}
         >
-          {label === "Activity" ? (
+          {link.key === "activity" ? (
             <Badge
               placement="top-right"
-              color="success"
+              color="primary"
               disableOutline
               isInvisible={countActivity === 0}
               content={countActivity > 99 ? `99+` : `${countActivity}`}
@@ -84,8 +77,8 @@ const NavbarComponent = () => {
 
   const links = mockLinks.map((link, index) => (
     <NavbarLink
-      {...link}
-      key={link.label}
+      key={index}
+      link={link}
       active={index === active}
       onClick={() => setActive(index)}
     />

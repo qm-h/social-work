@@ -1,3 +1,5 @@
+import { IconType } from "react-icons/lib";
+
 export type Activity = {
   id: number;
   userID: number;
@@ -7,6 +9,13 @@ export type Activity = {
   participantsMax: number;
   state: "stopped" | "running";
   date: number;
+};
+
+export type LinkType = {
+  icon: IconType;
+  key: string;
+  label: string;
+  path: string;
 };
 
 export type MessageType = {

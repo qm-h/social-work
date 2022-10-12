@@ -1,13 +1,18 @@
 import "dayjs/locale/fr";
 
-import { Activity, MessageType, UserType } from "../types";
+import { Activity, LinkType, MessageType, UserType } from "../types";
 import { MdLocalActivity, MdSpaceDashboard } from "react-icons/md";
 
 import dayjs from "dayjs";
 
-const mockLinks = [
-  { icon: MdSpaceDashboard, label: "Dashboard", path: "/" },
-  { icon: MdLocalActivity, label: "Activity", path: "/activity" },
+const mockLinks: LinkType[] = [
+  { icon: MdSpaceDashboard, key: "dashboard", label: "Dashboard", path: "/" },
+  {
+    icon: MdLocalActivity,
+    key: "activity",
+    label: "Activités",
+    path: "/activity",
+  },
 ];
 
 const mockMessage: MessageType[] = [
