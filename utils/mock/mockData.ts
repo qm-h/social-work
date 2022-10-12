@@ -1,45 +1,48 @@
 import "dayjs/locale/fr";
 
-import {
-  IconBuildingBank,
-  IconCashBanknote,
-  IconCoin,
-  IconCreditCard,
-  IconGauge,
-  IconHome2,
-  IconMoodHappy,
-  IconReceipt,
-  IconReceiptRefund,
-  IconReceiptTax,
-  IconRepeat,
-  IconReport,
-} from "@tabler/icons";
+import { Activity, MessageType, UserType } from "../types";
+import { MdLocalActivity, MdSpaceDashboard } from "react-icons/md";
 
-import { Activity } from "./types";
 import dayjs from "dayjs";
 
 const mockLinks = [
-  { icon: IconHome2, label: "Home", path: "/" },
-  { icon: IconGauge, label: "Dashboard", path: "/dashboard" },
-  { icon: IconMoodHappy, label: "Activity", path: "/activity" },
+  { icon: MdSpaceDashboard, label: "Dashboard", path: "/" },
+  { icon: MdLocalActivity, label: "Activity", path: "/activity" },
 ];
 
-const mockDataCard = [
-  { title: "Credit cards", icon: IconCreditCard, color: "violet" },
-  { title: "Banks nearby", icon: IconBuildingBank, color: "indigo" },
-  { title: "Transfers", icon: IconRepeat, color: "blue" },
-  { title: "Refunds", icon: IconReceiptRefund, color: "green" },
-  { title: "Receipts", icon: IconReceipt, color: "teal" },
-  { title: "Taxes", icon: IconReceiptTax, color: "cyan" },
-  { title: "Reports", icon: IconReport, color: "pink" },
-  { title: "Payments", icon: IconCoin, color: "red" },
-  { title: "Cashback", icon: IconCashBanknote, color: "orange" },
+const mockMessage: MessageType[] = [
+  {
+    id: 0,
+    userID: 0,
+    message: "Hello world",
+    date: dayjs().unix(),
+  },
+  {
+    id: 1,
+    userID: 1,
+    message: "Hello world",
+    date: 1670887526,
+  },
+  {
+    id: 2,
+    userID: 2,
+    message: "Hello world",
+    date: dayjs().unix(),
+  },
+  {
+    id: 3,
+    userID: 1,
+    message: "Hello world",
+    date: dayjs().unix(),
+  },
 ];
 
 const mockActivity: Activity[] = [
   {
     id: 0,
+    userID: 0,
     title: "Laser Game",
+    description: "Laser Game description",
     participants: 4,
     participantsMax: 10,
     state: "stopped",
@@ -47,7 +50,9 @@ const mockActivity: Activity[] = [
   },
   {
     id: 1,
+    userID: 1,
     title: "Lancé de haches",
+    description: "Lancé de haches description",
     participants: 4,
     participantsMax: 10,
     state: "running",
@@ -55,12 +60,60 @@ const mockActivity: Activity[] = [
   },
   {
     id: 2,
+    userID: 2,
     title: "Karting",
+    description: "Karting description",
     participants: 10,
     participantsMax: 10,
+    state: "stopped",
+    date: dayjs().unix(),
+  },
+  {
+    id: 3,
+    userID: 1,
+    title: "Football",
+    description: "Football description",
+    participants: 8,
+    participantsMax: 20,
+    state: "running",
+    date: dayjs().unix(),
+  },
+  {
+    id: 4,
+    userID: 2,
+    title: "Paintball",
+    description: "Paintball description",
+    participants: 10,
+    participantsMax: 30,
     state: "running",
     date: dayjs().unix(),
   },
 ];
 
-export { mockLinks, mockDataCard, mockActivity };
+const mockUser: UserType[] = [
+  {
+    id: 0,
+    name: "John Doe",
+    avatar: "https://randomuser.me/api/portraits/med/men/50.jpg",
+    email: "johndoe@mail.com",
+    password: "password",
+    isConnect: false,
+  },
+  {
+    id: 1,
+    name: "Jane Doe",
+    avatar: "https://randomuser.me/api/portraits/med/women/20.jpg",
+    email: "janedoe@mail.com",
+    password: "pass",
+    isConnect: true,
+  },
+  {
+    id: 2,
+    name: "Yves Gérard",
+    avatar: "https://randomuser.me/api/portraits/med/men/77.jpg",
+    email: "yvesgerard@mail.com",
+    password: "pass",
+    isConnect: true,
+  },
+];
+export { mockLinks, mockActivity, mockMessage, mockUser };

@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -10,26 +9,29 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import { Activity } from "../utils/mock/types";
+import { Activity } from "../utils/types";
+import { User } from "@nextui-org/react";
+import { convertTimeStampToDate } from "../utils/convert";
 import dayjs from "dayjs";
-import { mockActivity } from "../utils/mock/mockData";
+import { mockUser } from "../utils/mock/mockData";
 
 interface ActivityCardProps {
   activity: Activity;
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { title, participants, participantsMax, date, state, id } = activity;
+  const { title, participants, participantsMax, date, state, id, userID } =
+    activity;
   const [isCompleted, setIsCompleted] = useState(false);
   const [convertedDate, setConvertedDate] = useState("");
   const [isToday, setIsToday] = useState(false);
   const [parti, setParti] = useState(participants);
   const [hasAdded, setHasAdded] = useState(false);
-
+  const user = mockUser.filter((user) => user.id === userID)[0];
   const addParticipants = () => {
     if (parti < participantsMax) {
       setParti(parti + 1);
-      // setHasAdded(true);
+      setHasAdded(true);
     }
   };
 
@@ -40,23 +42,15 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
   useEffect(() => {
     if (dayjs().isSame(date * 1000, "date")) {
       setIsToday(true);
-      setConvertedDate(
-        dayjs(date * 1000)
-          .locale("fr")
-          .format("HH:mm")
-      );
+      setConvertedDate(convertTimeStampToDate(date, "HH:mm"));
     } else {
       setIsToday(false);
-      setConvertedDate(
-        dayjs(date * 1000)
-          .locale("fr")
-          .format("DD MMMM à HH:mm")
-      );
+      setConvertedDate(convertTimeStampToDate(date, "DD MMMM à HH:mm"));
     }
   }, [date]);
 
   return (
-    <Card shadow="sm" p="lg" radius="lg">
+    <Card p="lg" radius="lg">
       <Card.Section>
         <Image
           src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
@@ -66,25 +60,13 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
       </Card.Section>
       <Box sx={{ paddingTop: "1rem" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Group position="center" align="center">
-            <Indicator position="bottom-center" size={16} withBorder>
-              <Avatar
-                size="lg"
-                radius="xl"
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-              />
-            </Indicator>
-            <Text
-              sx={{
-                marginLeft: "1em",
-                fontSize: 20,
-                color: "#171B1E",
-                fontWeight: 500,
-              }}
-            >
-              Yves
-            </Text>
-          </Group>
+          <User
+            size="lg"
+            color={user.isConnect ? "success" : "default"}
+            bordered
+            src={user.avatar}
+            name={user.name}
+          />
         </Box>
         <Box
           sx={{

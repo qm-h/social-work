@@ -1,15 +1,11 @@
-import {
-  Navbar,
-  Stack,
-  Tooltip,
-  UnstyledButton,
-  createStyles,
-} from "@mantine/core";
+import { Badge, Tooltip } from "@nextui-org/react";
+import { Navbar, Stack, UnstyledButton, createStyles } from "@mantine/core";
+import { mockActivity, mockLinks } from "../utils/mock/mockData";
+import { useEffect, useState } from "react";
 
+import { IconType } from "react-icons/lib";
 import Link from "next/link";
-import { TablerIcon } from "@tabler/icons";
-import { mockLinks } from "../utils/mock/mockData";
-import { useState } from "react";
+import Router from "next/router";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -39,7 +35,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface NavbarLinkProps {
-  icon: TablerIcon;
+  icon: IconType;
   label: string;
   active?: boolean;
   onClick?(): void;
@@ -54,14 +50,30 @@ const NavbarLink = ({
   path,
 }: NavbarLinkProps) => {
   const { classes, cx } = useStyles();
+  const countActivity = mockActivity.length;
+
   return (
-    <Tooltip label={label} position="right" transitionDuration={0}>
+    <Tooltip placement="right" color="primary" rounded content={label}>
       <Link href={path ? path : ""}>
         <UnstyledButton
           onClick={onClick}
           className={cx(classes.link, { [classes.active]: active })}
         >
-          <Icon stroke={2} />
+          {label === "Activity" ? (
+            <Badge
+              placement="top-right"
+              color="success"
+              disableOutline
+              isInvisible={countActivity === 0}
+              content={countActivity > 99 ? `99+` : `${countActivity}`}
+              size="xs"
+              shape="rectangle"
+            >
+              <Icon size={20} />
+            </Badge>
+          ) : (
+            <Icon size={23} />
+          )}
         </UnstyledButton>
       </Link>
     </Tooltip>
@@ -82,7 +94,7 @@ const NavbarComponent = () => {
 
   return (
     <Navbar height="100%" width={{ base: 80 }} p="md">
-      <Navbar.Section grow mt={50}>
+      <Navbar.Section grow>
         <Stack justify="center" spacing={0}>
           {links}
         </Stack>
