@@ -1,20 +1,14 @@
-import { Grid } from "@mantine/core";
 import ActivityCard from "../components/ActivityCard";
+import { Grid } from "@mantine/core";
+import { mockActivity } from "../utils/mock/mockData";
 
 const Activity = () => (
   <Grid gutter={30}>
-    <Grid.Col span={3}>
-      <ActivityCard />
-    </Grid.Col>
-    <Grid.Col span={3}>
-      <ActivityCard />
-    </Grid.Col>
-    <Grid.Col span={3}>
-      <ActivityCard />
-    </Grid.Col>
-    <Grid.Col span={3}>
-      <ActivityCard />
-    </Grid.Col>
+    {mockActivity.map((activity, id) => (
+      <Grid.Col key={id} span={3}>
+        <ActivityCard activity={activity} />
+      </Grid.Col>
+    ))}
   </Grid>
 );
 

@@ -1,6 +1,9 @@
-import { createStyles, Header, Autocomplete, Center } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Autocomplete, Center, Header, createStyles } from "@mantine/core";
+
 import { IconSearch } from "@tabler/icons";
+import dayjs from "dayjs";
+import { mockActivity } from "../utils/mock/mockData";
+import { useDisclosure } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -22,9 +25,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   search: {
-    [theme.fn.smallerThan("xs")]: {
-      display: "none",
-    },
+    marginTop: theme.spacing.xs,
+    width: "30%",
   },
 
   link: {
@@ -57,16 +59,23 @@ function HeaderSearchComponent({ links }: HeaderSearchProps) {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 
-  const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </a>
-  ));
+  const activities = () => {
+    const activities: string[] = [];
+    mockActivity.forEach((activity) => {
+      if (
+        activity.title &&
+        !activities.includes(activity.title) &&
+        activity.state === "running"
+      ) {
+        activities.push(
+          `${activity.title} - ${dayjs(activity.date * 1000).format(
+            "DD/MM/YYYY"
+          )}`
+        );
+      }
+    });
+    return activities;
+  };
 
   return (
     <Header height={56} className={classes.header}>
@@ -74,16 +83,10 @@ function HeaderSearchComponent({ links }: HeaderSearchProps) {
         <Autocomplete
           className={classes.search}
           placeholder="Search"
+          radius="md"
+          variant="filled"
           icon={<IconSearch size={16} stroke={1.5} />}
-          data={[
-            "React",
-            "Angular",
-            "Vue",
-            "Next.js",
-            "Riot.js",
-            "Svelte",
-            "Blitz.js",
-          ]}
+          data={activities()}
         />
       </Center>
     </Header>
