@@ -1,9 +1,8 @@
 import { Autocomplete, Center, Header, createStyles } from "@mantine/core";
 
-import { IconSearch } from "@tabler/icons";
+import { IoSearch } from "react-icons/io5";
 import dayjs from "dayjs";
 import { mockActivity } from "../utils/mock/mockData";
-import { useDisclosure } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -56,7 +55,6 @@ interface HeaderSearchProps {
 }
 
 const HeaderSearchComponent = ({ links }: HeaderSearchProps) => {
-  const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 
   const activities = () => {
@@ -85,7 +83,7 @@ const HeaderSearchComponent = ({ links }: HeaderSearchProps) => {
           placeholder="Search"
           radius="md"
           variant="filled"
-          icon={<IconSearch size={16} stroke={1.5} />}
+          icon={<IoSearch size={16} stroke={1.5} />}
           data={activities()}
         />
       </Center>
