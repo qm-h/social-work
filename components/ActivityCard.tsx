@@ -19,50 +19,63 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { title, participants, participantsMax, date, state, id } = activity;
+  const { participants, participantsMax } = activity;
   const [isCompleted, setIsCompleted] = useState(false);
   const [convertedDate, setConvertedDate] = useState("");
   const [isToday, setIsToday] = useState(false);
   const [parti, setParti] = useState(participants);
   const [hasAdded, setHasAdded] = useState(false);
+  const [state, setState] = useState("running");
 
   const addParticipants = () => {
-    if (parti < participantsMax) {
+    if (parti < activity.places && !hasAdded) {
       setParti(parti + 1);
-      // setHasAdded(true);
+      setHasAdded(true);
     }
   };
 
   useEffect(() => {
-    setIsCompleted(parti === participantsMax);
+    setIsCompleted(activity.places_actuel === activity.places);
   }, [parti, participantsMax]);
 
   useEffect(() => {
-    if (dayjs().isSame(date * 1000, "date")) {
+    if (dayjs().isSame(activity.date_creation * 1000, "date")) {
       setIsToday(true);
       setConvertedDate(
-        dayjs(date * 1000)
+        dayjs(activity.date_creation * 1000)
           .locale("fr")
           .format("HH:mm")
       );
     } else {
       setIsToday(false);
       setConvertedDate(
-        dayjs(date * 1000)
+        dayjs(activity.date_creation * 1000)
           .locale("fr")
           .format("DD MMMM à HH:mm")
       );
     }
-  }, [date]);
+  }, [activity.date_creation]);
+
+  useEffect(() => {
+    let state = "";
+    if (dayjs().unix() < activity.date_creation) {
+      state = "running";
+    }
+    setState(state);
+  }, [activity.date_creation]);
+
+  useEffect(() => {
+    setParti(activity.places_actuel);
+  }, [activity.places_actuel]);
+
+  {
+    console.log(activity);
+  }
 
   return (
     <Card shadow="sm" p="lg" radius="lg">
       <Card.Section>
-        <Image
-          src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
-          height={160}
-          alt="Norway"
-        />
+        <Image src={activity.icon_activite} height={160} alt="Norway" />
       </Card.Section>
       <Box sx={{ paddingTop: "1rem" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -82,7 +95,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                 fontWeight: 500,
               }}
             >
-              Yves
+              {activity.name}
             </Text>
           </Group>
         </Box>
@@ -103,11 +116,11 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                 fontWeight: 500,
                 textOverflow: "ellipsis",
                 overflow: "hidden",
-                width: "100%",
+                width: "10em",
                 whiteSpace: "nowrap",
               }}
             >
-              {title}
+              {activity.description}
             </Text>
             <Text
               sx={{
@@ -154,7 +167,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                     margin: ".1rem",
                   }}
                 >
-                  {parti} / {participantsMax}
+                  {parti} / {activity.places}
                 </Text>
               </Indicator>
               <Button

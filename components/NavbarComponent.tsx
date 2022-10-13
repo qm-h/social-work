@@ -1,14 +1,10 @@
-import {
-  Navbar,
-  Stack,
-  Tooltip,
-  UnstyledButton,
-  createStyles,
-} from "@mantine/core";
+import { Badge, Tooltip } from "@nextui-org/react";
+import { Navbar, Stack, UnstyledButton, createStyles } from "@mantine/core";
+import { mockActivity, mockLinks } from "../utils/mock/mockData";
 
+import { IconType } from "react-icons/lib";
 import Link from "next/link";
-import { TablerIcon } from "@tabler/icons";
-import { mockLinks } from "../utils/mock/mockData";
+import { LinkType } from "../utils/types";
 import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
@@ -39,29 +35,41 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface NavbarLinkProps {
-  icon: TablerIcon;
-  label: string;
+  link: LinkType;
   active?: boolean;
   onClick?(): void;
-  path?: string;
 }
 
-const NavbarLink = ({
-  icon: Icon,
-  label,
-  active,
-  onClick,
-  path,
-}: NavbarLinkProps) => {
+const NavbarLink = ({ link, active, onClick }: NavbarLinkProps) => {
   const { classes, cx } = useStyles();
+  const countActivityRunning = mockActivity.filter(
+    (activity) => activity.state === "running"
+  ).length;
+  const Icon = link.icon as IconType;
   return (
-    <Tooltip label={label} position="right" transitionDuration={0}>
-      <Link href={path ? path : ""}>
+    <Tooltip placement="right" color="primary" rounded content={link.label}>
+      <Link href={link.path ? link.path : ""}>
         <UnstyledButton
           onClick={onClick}
           className={cx(classes.link, { [classes.active]: active })}
         >
-          <Icon stroke={2} />
+          {link.key === "activity" ? (
+            <Badge
+              placement="top-right"
+              color="primary"
+              disableOutline
+              isInvisible={countActivityRunning === 0}
+              content={
+                countActivityRunning > 99 ? `99+` : `${countActivityRunning}`
+              }
+              size="xs"
+              shape="rectangle"
+            >
+              <Icon size={20} />
+            </Badge>
+          ) : (
+            <Icon size={23} />
+          )}
         </UnstyledButton>
       </Link>
     </Tooltip>
@@ -73,8 +81,8 @@ const NavbarComponent = () => {
 
   const links = mockLinks.map((link, index) => (
     <NavbarLink
-      {...link}
-      key={link.label}
+      key={index}
+      link={link}
       active={index === active}
       onClick={() => setActive(index)}
     />
@@ -82,7 +90,7 @@ const NavbarComponent = () => {
 
   return (
     <Navbar height="100%" width={{ base: 80 }} p="md">
-      <Navbar.Section grow mt={50}>
+      <Navbar.Section grow>
         <Stack justify="center" spacing={0}>
           {links}
         </Stack>
