@@ -92,10 +92,21 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
             marginBottom: "1em",
             display: "grid",
             gridTemplateColumns: "repeat(2,1fr)",
+            width: "100%",
           }}
         >
           <Box>
-            <Text sx={{ fontSize: 20, color: "#171B1E", fontWeight: 500 }}>
+            <Text
+              sx={{
+                fontSize: 20,
+                color: "#171B1E",
+                fontWeight: 500,
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                width: "100%",
+                whiteSpace: "nowrap",
+              }}
+            >
               {title}
             </Text>
             <Text
@@ -107,7 +118,14 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
             >
               {state === "running" ? "En cours" : "Terminé"}
             </Text>
-            <Text sx={{ fontSize: 16, color: "#85888A", fontWeight: 400 }}>
+            <Text
+              sx={{
+                fontSize: 16,
+                color: "#85888A",
+                fontWeight: 400,
+                textTransform: "capitalize",
+              }}
+            >
               {isToday ? `Aujourd'hui à ${convertedDate}` : convertedDate}
             </Text>
           </Box>
