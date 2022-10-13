@@ -1,8 +1,10 @@
-import { Avatar, Badge, Col, Grid, Row, Text, User } from "@nextui-org/react";
+import { Grid, Text, User } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 
 import { ActionIcon } from "@mantine/core";
 import type { Activity } from "../utils/types";
 import { HiDotsVertical } from "react-icons/hi";
+import { UserType } from "../utils/types";
 import { convertTimeStampToDate } from "../utils/convert";
 import { mockUser } from "../utils/mock/mockData";
 
@@ -11,13 +13,16 @@ interface ActivityInfoProps {
 }
 
 const ActivityInfo = ({ activity }: ActivityInfoProps) => {
-  const user = mockUser.filter((user) => user.id === activity.userID)[0];
+  const [user, setUser] = useState<UserType | undefined>();
+  useEffect(() => {
+    setUser(mockUser.filter((user) => user.id === activity.userID)[0]);
+  }, [activity.userID]);
   return (
     <Grid.Container justify="space-between" alignItems="center">
       <Grid lg={4} justify="flex-start" alignItems="flex-start">
         <User
           size="lg"
-          src={user.avatar}
+          src={user?.avatar}
           name={activity.title}
           bordered
           color="success"

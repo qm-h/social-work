@@ -13,6 +13,7 @@ const AnalyticsCards = () => {
   const countActivityStopped = mockActivity.filter(
     (activity) => activity.state === "stopped"
   ).length;
+
   return (
     <Grid.Container gap={1} wrap="wrap">
       <Grid lg={6}>

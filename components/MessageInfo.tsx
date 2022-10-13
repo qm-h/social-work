@@ -1,8 +1,9 @@
 import { Avatar, Badge, Col, Grid, Row, Text, User } from "@nextui-org/react";
+import type { MessageType, UserType } from "../utils/types";
+import { useEffect, useState } from "react";
 
 import { ActionIcon } from "@mantine/core";
 import { HiDotsVertical } from "react-icons/hi";
-import type { MessageType } from "../utils/types";
 import { convertTimeStampToDate } from "../utils/convert";
 import { mockUser } from "../utils/mock/mockData";
 
@@ -11,14 +12,17 @@ interface MessageInfoProps {
 }
 
 const MessageInfo = ({ message }: MessageInfoProps) => {
-  const user = mockUser.filter((user) => user.id === message.userID)[0];
+  const [user, setUser] = useState<UserType | undefined>();
+  useEffect(() => {
+    setUser(mockUser.filter((user) => user.id === message.userID)[0]);
+  }, [message.userID]);
   return (
     <Grid.Container justify="space-between" alignItems="center">
       <Grid lg={4} justify="flex-start" alignItems="flex-start">
         <User
           size="lg"
-          src={user.avatar}
-          name={user.name}
+          src={user?.avatar}
+          name={user?.name}
           bordered
           color="success"
           description={message.message}

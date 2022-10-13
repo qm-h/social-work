@@ -50,11 +50,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface HeaderSearchProps {
-  links: { link: string; label: string }[];
-}
-
-const HeaderSearchComponent = ({ links }: HeaderSearchProps) => {
+const HeaderSearchComponent = () => {
   const { classes } = useStyles();
 
   const activities = () => {
