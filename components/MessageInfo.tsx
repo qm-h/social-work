@@ -20,7 +20,7 @@ const MessageInfo = ({ message }: MessageInfoProps) => {
           src={user.avatar}
           name={user.name}
           bordered
-          color="success"
+          color={user.isConnect ? "success" : "default"}
           description={message.message}
         />
       </Grid>

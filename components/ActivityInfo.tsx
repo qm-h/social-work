@@ -20,7 +20,7 @@ const ActivityInfo = ({ activity }: ActivityInfoProps) => {
           src={user.avatar}
           name={activity.title}
           bordered
-          color="success"
+          color={user.isConnect ? "success" : "default"}
           description={activity.description}
         />
       </Grid>
