@@ -1,16 +1,8 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Group,
-  Image,
-  Indicator,
-  Text,
-} from "@mantine/core";
+import { Box, Button, Card, Image, Indicator, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import { Activity } from "../utils/mock/types";
+import { Activity } from "../utils/types";
+import { User } from "@nextui-org/react";
 import dayjs from "dayjs";
 
 interface ActivityCardProps {
@@ -38,30 +30,30 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
   }, [parti, participantsMax]);
 
   useEffect(() => {
-    if (dayjs().isSame(activity.date_creation * 1000, "date")) {
+    if (dayjs().isSame(activity.date_evenement * 1000, "date")) {
       setIsToday(true);
       setConvertedDate(
-        dayjs(activity.date_creation * 1000)
+        dayjs(activity.date_evenement * 1000)
           .locale("fr")
           .format("HH:mm")
       );
     } else {
       setIsToday(false);
       setConvertedDate(
-        dayjs(activity.date_creation * 1000)
+        dayjs(activity.date_evenement * 1000)
           .locale("fr")
           .format("DD MMMM à HH:mm")
       );
     }
-  }, [activity.date_creation]);
+  }, [activity.date_evenement]);
 
   useEffect(() => {
     let state = "";
-    if (dayjs().unix() < activity.date_creation) {
+    if (dayjs().unix() < activity.date_evenement) {
       state = "running";
     }
     setState(state);
-  }, [activity.date_creation]);
+  }, [activity.date_evenement]);
 
   useEffect(() => {
     setParti(activity.places_actuel);
@@ -70,29 +62,22 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
   return (
     <Card shadow="sm" p="lg" radius="lg">
       <Card.Section>
-        <Image src={activity.icon_activite} height={160} alt="Norway" />
+        <Image
+          src={activity.icon_activite}
+          height={160}
+          alt={activity.description}
+        />
       </Card.Section>
       <Box sx={{ paddingTop: "1rem" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Group position="center" align="center">
-            <Indicator position="bottom-center" size={16} withBorder>
-              <Avatar
-                size="lg"
-                radius="xl"
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-              />
-            </Indicator>
-            <Text
-              sx={{
-                marginLeft: "1em",
-                fontSize: 20,
-                color: "#171B1E",
-                fontWeight: 500,
-              }}
-            >
-              {activity.name}
-            </Text>
-          </Group>
+          <User
+            size="lg"
+            color="success"
+            css={{ zIndex: 0 }}
+            bordered
+            src={"https://randomuser.me/api/portraits/med/women/28.jpg"}
+            name={activity.name}
+          />
         </Box>
         <Box
           sx={{

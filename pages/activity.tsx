@@ -1,26 +1,28 @@
-import { useState, useRef } from "react";
+import "dayjs/locale/fr";
+
+import { Box, Button, Image, Modal, Text } from "@mantine/core";
+import { useRef, useState } from "react";
+
 import ActivityCard from "../components/ActivityCard";
+import { AiOutlinePlus } from "react-icons/ai";
 import { Calendar } from "@mantine/dates";
-import { Modal, Text, Box, Button, Image } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { Input } from "@nextui-org/react";
-import { convertTimeStampToDate } from "../utils/convert";
-import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineUploadFile } from "react-icons/md";
 import dayjs from "dayjs";
-import "dayjs/locale/fr";
+
 interface ActivityProps {
   data: [];
 }
 const Activity = ({ data }: ActivityProps) => {
   const [modal, setModal] = useState(false);
   const [activityName, setActivityName] = useState("");
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState<string>("0");
   const [daySelected, setDaySelected] = useState(new Date());
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [hour, setHour] = useState("");
   const [image, setImage] = useState<File | undefined>(undefined);
-  const [base64, setBase64] = useState(undefined);
+  const [base64, setBase64] = useState<string | ArrayBuffer | null>("");
   const openRef = useRef<() => void>(null);
 
   const uploadToClient = (file: File[]) => {
@@ -38,21 +40,23 @@ const Activity = ({ data }: ActivityProps) => {
   const uploadToServer = async () => {
     try {
       const formData = new FormData();
-      formData.append("id_demandeur", 6);
+      formData.append("id_demandeur", "6");
       formData.append(
-        "date_creation",
+        "date_evenement",
         dayjs(daySelected)
-          .hour(hour.substr(0, 2))
-          .minute(hour.substr(3, 2))
+          .hour(parseInt(hour.substring(0, 2)))
+          .minute(parseInt(hour.substring(3, 2)))
           .second(0)
           .unix()
+          .toString()
       );
-      formData.append("places_actuel", 0);
-      formData.append("places", parseFloat(number));
-      formData.append("id_type_activite", 4);
+      formData.append("places_actuel", "0");
+      formData.append("places", number);
+      formData.append("id_type_activite", "4");
       formData.append("description", activityName);
       formData.append("nom", activityName);
-      formData.append("icon_activite", base64);
+      formData.append("date_creation", dayjs().unix().toString());
+      if (base64) formData.append("icon_activite", base64.toString());
       const sendData = await fetch(
         "http://188.165.238.34:8080/api-social-work/server/addActivity.php",
         {
