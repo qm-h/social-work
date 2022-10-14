@@ -1,7 +1,7 @@
-import { Badge, Tooltip } from "@nextui-org/react";
 import { Navbar, Stack, UnstyledButton, createStyles } from "@mantine/core";
 import { mockActivity, mockLinks } from "../utils/mock/mockData";
 
+import { Badge } from "@nextui-org/react";
 import { IconType } from "react-icons/lib";
 import Link from "next/link";
 import { LinkType } from "../utils/types";
@@ -47,32 +47,30 @@ const NavbarLink = ({ link, active, onClick }: NavbarLinkProps) => {
   ).length;
   const Icon = link.icon as IconType;
   return (
-    <Tooltip placement="right" color="primary" rounded content={link.label}>
-      <Link href={link.path ? link.path : ""}>
-        <UnstyledButton
-          onClick={onClick}
-          className={cx(classes.link, { [classes.active]: active })}
-        >
-          {link.key === "activity" ? (
-            <Badge
-              placement="top-right"
-              color="primary"
-              disableOutline
-              isInvisible={countActivityRunning === 0}
-              content={
-                countActivityRunning > 99 ? `99+` : `${countActivityRunning}`
-              }
-              size="xs"
-              shape="rectangle"
-            >
-              <Icon size={20} />
-            </Badge>
-          ) : (
-            <Icon size={23} />
-          )}
-        </UnstyledButton>
-      </Link>
-    </Tooltip>
+    <Link href={link.path ? link.path : ""}>
+      <UnstyledButton
+        onClick={onClick}
+        className={cx(classes.link, { [classes.active]: active })}
+      >
+        {link.key === "activity" ? (
+          <Badge
+            placement="top-right"
+            color="primary"
+            disableOutline
+            isInvisible={countActivityRunning === 0}
+            content={
+              countActivityRunning > 99 ? `99+` : `${countActivityRunning}`
+            }
+            size="xs"
+            shape="rectangle"
+          >
+            <Icon size={20} />
+          </Badge>
+        ) : (
+          <Icon size={23} />
+        )}
+      </UnstyledButton>
+    </Link>
   );
 };
 

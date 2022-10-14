@@ -1,63 +1,82 @@
-import { Badge, Text, User } from "@nextui-org/react";
-import { Box, Button, Card, Image } from "@mantine/core";
+import { Box, Button, Card, Image, Indicator, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { Activity } from "../utils/types";
-import { convertTimeStampToDate } from "../utils/convert";
+import { User } from "@nextui-org/react";
 import dayjs from "dayjs";
-import { mockUser } from "../utils/mock/mockData";
 
 interface ActivityCardProps {
   activity: Activity;
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { title, participants, participantsMax, date, state, userID } =
-    activity;
+  const { participants, participantsMax } = activity;
   const [isCompleted, setIsCompleted] = useState(false);
   const [convertedDate, setConvertedDate] = useState("");
   const [isToday, setIsToday] = useState(false);
   const [parti, setParti] = useState(participants);
   const [hasAdded, setHasAdded] = useState(false);
-  const user = mockUser.filter((user) => user.id === userID)[0];
+  const [state, setState] = useState("running");
+
   const addParticipants = () => {
-    if (parti < participantsMax) {
+    if (parti < activity.places && !hasAdded) {
       setParti(parti + 1);
       setHasAdded(true);
     }
   };
 
   useEffect(() => {
-    setIsCompleted(parti === participantsMax);
+    setIsCompleted(activity.places_actuel === activity.places);
   }, [parti, participantsMax]);
 
   useEffect(() => {
-    if (dayjs().isSame(date * 1000, "date")) {
+    if (dayjs().isSame(activity.date_evenement * 1000, "date")) {
       setIsToday(true);
-      setConvertedDate(convertTimeStampToDate(date, "HH:mm"));
+      setConvertedDate(
+        dayjs(activity.date_evenement * 1000)
+          .locale("fr")
+          .format("HH:mm")
+      );
     } else {
       setIsToday(false);
-      setConvertedDate(convertTimeStampToDate(date, "DD MMMM à HH:mm"));
+      setConvertedDate(
+        dayjs(activity.date_evenement * 1000)
+          .locale("fr")
+          .format("DD MMMM à HH:mm")
+      );
     }
-  }, [date]);
+  }, [activity.date_evenement]);
+
+  useEffect(() => {
+    let state = "";
+    if (dayjs().unix() < activity.date_evenement) {
+      state = "running";
+    }
+    setState(state);
+  }, [activity.date_evenement]);
+
+  useEffect(() => {
+    setParti(activity.places_actuel);
+  }, [activity.places_actuel]);
 
   return (
-    <Card p="lg" radius="lg">
+    <Card shadow="sm" p="lg" radius="lg">
       <Card.Section>
         <Image
-          src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+          src={activity.icon_activite}
           height={160}
-          alt="Norway"
+          alt={activity.description}
         />
       </Card.Section>
       <Box sx={{ paddingTop: "1rem" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <User
             size="lg"
-            color={user.isConnect ? "success" : "default"}
+            color="success"
+            css={{ zIndex: 0 }}
             bordered
-            src={user.avatar}
-            name={user.name}
+            src={"https://randomuser.me/api/portraits/med/women/28.jpg"}
+            name={activity.name}
           />
         </Box>
         <Box
@@ -66,21 +85,40 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
             marginBottom: "1em",
             display: "grid",
             gridTemplateColumns: "repeat(2,1fr)",
+            width: "100%",
           }}
         >
           <Box>
-            <Text h3 css={{ color: "#171B1E", fontWeight: 500 }}>
-              {title}
+            <Text
+              sx={{
+                fontSize: 20,
+                color: "#171B1E",
+                fontWeight: 500,
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                width: "10em",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {activity.description}
             </Text>
             <Text
-              css={{
-                color: state === "running" ? "$blue600" : "$red600",
+              sx={{
+                fontSize: 18,
+                color: state === "running" ? "#40c057" : "#f95352",
                 fontWeight: 400,
               }}
             >
               {state === "running" ? "En cours" : "Terminé"}
             </Text>
-            <Text css={{ color: "#85888A", fontWeight: 400 }}>
+            <Text
+              sx={{
+                fontSize: 16,
+                color: "#85888A",
+                fontWeight: 400,
+                textTransform: "capitalize",
+              }}
+            >
               {isToday ? `Aujourd'hui à ${convertedDate}` : convertedDate}
             </Text>
           </Box>
@@ -94,27 +132,24 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                 justifyContent: "space-between",
               }}
             >
-              <Badge
-                placement="top-right"
-                color={isCompleted ? "error" : "primary"}
-                content={isCompleted ? "Complet" : "Disponible"}
-                size="xs"
-                shape="rectangle"
+              <Indicator
+                position="top-end"
+                radius="sm"
+                color={isCompleted ? "red" : "green"}
+                label={isCompleted ? "Complet" : "Disponible"}
+                size={16}
               >
                 <Text
-                  css={{
+                  sx={{
                     fontSize: 20,
                     color: "#171B1E",
                     fontWeight: 500,
                     margin: ".1rem",
-                    padding: ".8rem",
-                    borderRadius: "$sm",
-                    background: "$accents0",
                   }}
                 >
-                  {parti} / {participantsMax}
+                  {parti} / {activity.places}
                 </Text>
-              </Badge>
+              </Indicator>
               <Button
                 disabled={isCompleted || hasAdded}
                 variant="light"

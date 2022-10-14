@@ -7,6 +7,12 @@ export type Activity = {
   description: string;
   participants: number;
   participantsMax: number;
+  places: number;
+  places_actuel: number;
+  date_creation: number;
+  date_evenement: number;
+  icon_activite: string;
+  name: string;
   state: "stopped" | "running";
   date: number;
 };
