@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 
 import { Activity } from "../utils/mock/types";
 import dayjs from "dayjs";
-import { mockActivity } from "../utils/mock/mockData";
 
 interface ActivityCardProps {
   activity: Activity;
@@ -67,10 +66,6 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
   useEffect(() => {
     setParti(activity.places_actuel);
   }, [activity.places_actuel]);
-
-  {
-    console.log(activity);
-  }
 
   return (
     <Card shadow="sm" p="lg" radius="lg">

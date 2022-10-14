@@ -4,7 +4,7 @@ import { Calendar } from "@mantine/dates";
 import { Modal, Text, Box, Button, Image } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { Input } from "@nextui-org/react";
-import { mockActivity } from "../utils/mock/mockData";
+import { convertTimeStampToDate } from "../utils/convert";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineUploadFile } from "react-icons/md";
 import dayjs from "dayjs";
@@ -22,8 +22,6 @@ const Activity = ({ data }: ActivityProps) => {
   const [image, setImage] = useState<File | undefined>(undefined);
   const [base64, setBase64] = useState(undefined);
   const openRef = useRef<() => void>(null);
-
-  console.log("data", data);
 
   const uploadToClient = (file: File[]) => {
     setImage(file[0]);
@@ -62,7 +60,6 @@ const Activity = ({ data }: ActivityProps) => {
           body: formData,
         }
       );
-      console.log(sendData);
     } catch (e) {
       console.error(e);
     }
