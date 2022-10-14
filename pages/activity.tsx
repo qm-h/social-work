@@ -72,6 +72,7 @@ const Activity = ({ data }: ActivityProps) => {
           body: formData,
         }
       );
+      setModal(false);
     } catch (e) {
       console.error(e);
     }
