@@ -42,10 +42,19 @@ const Activity = ({ data }: ActivityProps) => {
       const formData = new FormData();
       formData.append("id_demandeur", "6");
       formData.append(
+        "date_creation",
+        dayjs(daySelected)
+          .hour(parseInt(hour.substr(0, 2)))
+          .minute(parseInt(hour.substr(3, 2)))
+          .second(0)
+          .unix()
+          .toString()
+      );
+      formData.append(
         "date_evenement",
         dayjs(daySelected)
-          .hour(parseInt(hour.substring(0, 2)))
-          .minute(parseInt(hour.substring(3, 2)))
+          .hour(parseInt(hour.substr(0, 2)))
+          .minute(parseInt(hour.substr(3, 2)))
           .second(0)
           .unix()
           .toString()
@@ -55,7 +64,6 @@ const Activity = ({ data }: ActivityProps) => {
       formData.append("id_type_activite", "4");
       formData.append("description", activityName);
       formData.append("nom", activityName);
-      formData.append("date_creation", dayjs().unix().toString());
       if (base64) formData.append("icon_activite", base64.toString());
       const sendData = await fetch(
         "http://188.165.238.34:8080/api-social-work/server/addActivity.php",
